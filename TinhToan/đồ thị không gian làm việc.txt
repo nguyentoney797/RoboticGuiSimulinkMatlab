@@ -1,0 +1,103 @@
+clc;
+% Thong so cac khau
+D2R= pi/180;
+met=0.001;
+a1=100;
+a2=0;
+a3=0;
+a4= 0;
+
+d1min=0;
+d1max=4700
+d2min=0;
+d2max=2000
+d3max=1600;
+d3min=0;
+
+%Gioi han goc quay
+t1=-pi/2
+t2=-pi/2
+t3=0
+t4min=0
+t4max=360
+
+
+
+% Ma tran tao do:
+
+figure;
+i=0;
+
+for d1= d1min:100:d1max
+    for d2= d2min:100:d2max
+        for d3= d3min:100:d3max
+            for t4= t4min:90:t4max
+                         clc;
+                         i=i+1
+                        
+                        
+                         A10= [cos(t1*D2R) -cos(-90*D2R)*sin(t1*D2R)  sin(-90*D2R)*sin(t1*D2R) a1*cos(t1*D2R)
+                               sin(t1*D2R)  cos(-90*D2R)*cos(t1*D2R) -sin(-90*D2R)*cos(t1*D2R) a1*sin(t1*D2R)
+                                 0                sin(-90*D2R)             cos(-90*D2R)             d1*met
+                                 0                   0                          0                  1           ];
+                         A21= [cos(t2*D2R) -cos(90*D2R)*sin(t2*D2R)  sin(90*D2R)*sin(t2*D2R) a2*cos(t2*D2R)
+                               sin(t2*D2R)  cos(90*D2R)*cos(t2*D2R) -sin(90*D2R)*cos(t2*D2R) a2*sin(t2*D2R)
+                                 0                sin(90*D2R)             cos(90*D2R)             d2*met
+                                 0                   0                          0                  1           ];
+                         A32= [cos(t3*D2R) -cos(0*D2R)*sin(t3*D2R)  sin(0*D2R)*sin(t3*D2R) a3*cos(t3*D2R)
+                               sin(t3*D2R)  cos(0*D2R)*cos(t3*D2R) -sin(0*D2R)*cos(t3*D2R) a3*sin(t3*D2R)
+                                 0                sin(0*D2R)             cos(0*D2R)             d3*met
+                                 0                   0                          0                  1           ];
+                         A43= [cos(t4*D2R) -cos(-90*D2R)*sin(t4*D2R)  sin(-90*D2R)*sin(t4*D2R) a4*cos(t4*D2R)
+                               sin(t4*D2R)  cos(-90*D2R)*cos(t4*D2R) -sin(-90*D2R)*cos(t4*D2R) a4*sin(t4*D2R)
+                                 0                sin(-90*D2R)             cos(-90*D2R)             d4*met
+                                 0                   0                          0                  1           ];
+
+                         A60= A43*A32*A21*A10;
+                         P0= [0;0;0;1];
+                         M6= A60*P0;
+                      
+                       %Khong gian lam viec
+                       %ve do thi XY
+                     
+                         subplot(2,2,1)
+                         if M6(3,1)==0.5;
+                         plot(M6(1,1),M6(2,1), 'k*','color','g');
+                         end;
+                         title('Do thi X-Y');
+                         xlabel('Truc X'); 
+                         ylabel('Truc Y');                         
+                         hold on;
+                       
+                       %ve do thi XZ
+                    
+                         subplot(2,2,2)
+                         plot(M6(1,1),M6(3,1), 'k*','color','g');                         
+                         title('Do thi X-Z');
+                         xlabel('X'); 
+                         zlabel('Z');
+                         hold on;
+                       
+                       %ve do thi YZ
+                     
+                    
+                         subplot(2,2,3)
+                         plot(M6(2,1), M6(3,1), 'k*','color','g');                         
+                         title('Do thi Y-Z');
+                         xlabel('Y'); 
+                         zlabel('Z');                         
+                         hold on;
+                       
+                       %ve do thi XYZ
+                         subplot(2,2,4)
+                         plot3(M6(1,1),M6(2,1), M6(3,1), 'k*','color','r');                         
+                         title('Do thi X-Y-Z');
+                         xlabel('X'); 
+                         ylabel('Y');
+                         zlabel('Z');                                               
+                         hold on;
+                    end
+                end
+            end
+       end
+grid on;
